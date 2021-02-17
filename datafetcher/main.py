@@ -43,11 +43,26 @@ def add_data_points(data, row):
     item_date = datetime.strptime(row[0], "%d.%m.%Y 00:00:00")
     incidence = row[7].replace(',', '.')
 
-    data['cases'].append((item_date.isoformat(), int(row[4])))
-    data['cases_sum'].append((item_date.isoformat(), int(row[5])))
-    data['incidence'].append((item_date.isoformat(), float(incidence)))
-    data['deaths'].append((item_date.isoformat(), int(row[8])))
-    data['deaths_sum'].append((item_date.isoformat(), int(row[9])))
+    data['cases'].append({
+        'x': item_date.isoformat(),
+        'y': int(row[4])
+    })
+    data['cases_sum'].append({
+        'x': item_date.isoformat(),
+        'y': int(row[5])
+    })
+    data['incidence'].append({
+        'x': item_date.isoformat(),
+        'y': float(incidence)
+    })
+    data['deaths'].append({
+        'x': item_date.isoformat(),
+        'y': int(row[8])
+    })
+    data['deaths_sum'].append({
+        'x': item_date.isoformat(),
+        'y': int(row[9])
+    })
 
     return data
 

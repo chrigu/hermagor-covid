@@ -1,22 +1,51 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <LineChart :chart-data="data" :options="options" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import json from '@/assets/data.json'
+import LineChart from '@/components/LineChart.vue'
+import covidData from '@/assets/data.json'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    LineChart
+  },
+  data () {
+    return {
+      options: {
+        title: {
+          display: true,
+          text: 'Chart.js Time Point Data'
+        },
+        scales: {
+          xAxes: [{
+            type: 'time',
+            distribution: 'series'
+          }]
+        }
+      },
+      data: {
+        datasets: []
+      }
+    }
+  },
+  methods: {
+    createDates (series) {
+      return series.map((datapoint) => new Date(datapoint.x))
+    }
   },
   mounted () {
-    console.log(json)
+    const dates = this.createDates(covidData.cases)
+    const casesSet = {
+      label: 'Fälle',
+      fill: false,
+      data: covidData.cases.map((datapoint, i) => ({ x: dates[i], y: datapoint.y }))
+    }
+    this.data.datasets = [casesSet]
   }
 }
 </script>
