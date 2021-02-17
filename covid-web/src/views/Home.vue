@@ -6,7 +6,9 @@
       <li>{{latestDeaths}}</li>
       <li>{{latestIncidence}}</li>
     </ul>
-    <BarChart v-if="hasDatasets(dailyData)" :chart-data="dailyData" :options="dailyOptions" />
+    <div>
+      <BarChart v-if="hasDatasets(dailyData)" :chart-data="dailyData" :options="dailyOptions" />
+    </div>
     <LineChart v-if="hasDatasets(sumData)" :chart-data="sumData" :options="sumOptions" />
     <LineChart v-if="hasDatasets(incidenceData)" :chart-data="incidenceData" :options="incidenceOptions" />
   </div>
@@ -25,6 +27,7 @@ export default {
     LineChart
   },
   data () {
+    // https://www.chartjs.org/samples/latest/scales/time/financial.html
     return {
       dailyOptions: {
         title: {
@@ -122,7 +125,9 @@ export default {
         label: label,
         fill: false,
         data: data.map((datapoint, i) => ({ x: datapoint.x, y: datapoint.y })),
-        backgroundColor: color
+        backgroundColor: color,
+        borderColor: color,
+        pointRadius: 0
       }
     },
     getLatestDatapoint (data) {
@@ -134,7 +139,7 @@ export default {
   },
   mounted () {
     // const dates = this.createDates(covidData.cases)
-    const dailyCasesSet = this.createDataSet(covidData.cases, 'Fälle', '#FFFF00')
+    const dailyCasesSet = this.createDataSet(covidData.cases, 'Fälle', '#0000FF')
     const dailyDeathsSet = this.createDataSet(covidData.deaths, 'Tote', '#FF0000')
     this.dailyData.datasets = [dailyCasesSet, dailyDeathsSet]
 
@@ -151,3 +156,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.chart {
+  position: relative;
+  height: 300px;
+}
+</style>
