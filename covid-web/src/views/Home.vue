@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-    <BarChart v-if="data.datasets.length > 0" :chart-data="data" :options="options" />
+    <ul>
+      <li>{{latestDate}}</li>
+      <li>{{latestCases}}</li>
+      <li>{{latestDeaths}}</li>
+      <li>{{latestIncidence}}</li>
+    </ul>
+    <BarChart v-if="hasDatasets" :chart-data="data" :options="options" />
   </div>
 </template>
 
@@ -19,7 +25,7 @@ export default {
       options: {
         title: {
           display: true,
-          text: 'Chart.js Time Point Data'
+          text: 'Hermagor neue Fälle & Tote'
         },
         scales: {
           xAxes: [{
@@ -31,7 +37,16 @@ export default {
       data: {
         labels: ['bla', 'blu'],
         datasets: []
-      }
+      },
+      latestDate: null,
+      latestCases: -1,
+      latestDeaths: -1,
+      latestIncidence: -1
+    }
+  },
+  computed: {
+    hasDatasets () {
+      return this.data.datasets.length > 0
     }
   },
   methods: {
@@ -45,6 +60,9 @@ export default {
         data: data.map((datapoint, i) => ({ x: dates[i], y: datapoint.y })),
         backgroundColor: color
       }
+    },
+    getLatestDatapoint (data) {
+      return data.slice(-1)[0]
     }
   },
   mounted () {
@@ -54,6 +72,11 @@ export default {
     console.log(deathsSet)
     this.data.datasets = [casesSet, deathsSet]
     console.log(this.data)
+
+    this.latestDate = this.getLatestDatapoint(dates)
+    this.latestCases = this.getLatestDatapoint(covidData.cases).y
+    this.latestDeaths = this.getLatestDatapoint(covidData.deaths).y
+    this.latestIncidence = this.getLatestDatapoint(covidData.incidence).y
   }
 }
 </script>
