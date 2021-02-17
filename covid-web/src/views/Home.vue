@@ -8,6 +8,7 @@
     </ul>
     <BarChart v-if="hasDatasets(dailyData)" :chart-data="dailyData" :options="dailyOptions" />
     <LineChart v-if="hasDatasets(sumData)" :chart-data="sumData" :options="sumOptions" />
+    <LineChart v-if="hasDatasets(incidenceData)" :chart-data="incidenceData" :options="incidenceOptions" />
   </div>
 </template>
 
@@ -33,7 +34,18 @@ export default {
         scales: {
           xAxes: [{
             type: 'time',
-            distribution: 'series'
+            distribution: 'series',
+            ticks: {
+              major: {
+                enabled: true,
+                fontStyle: 'bold'
+              },
+              source: 'data',
+              autoSkip: true,
+              autoSkipPadding: 75,
+              maxRotation: 0,
+              sampleSize: 100
+            }
           }]
         }
       },
@@ -49,7 +61,45 @@ export default {
         scales: {
           xAxes: [{
             type: 'time',
-            distribution: 'series'
+            distribution: 'series',
+            ticks: {
+              major: {
+                enabled: true,
+                fontStyle: 'bold'
+              },
+              source: 'data',
+              autoSkip: true,
+              autoSkipPadding: 75,
+              maxRotation: 0,
+              sampleSize: 100
+            }
+          }]
+        }
+      },
+      incidenceData: {
+        labels: ['bla'],
+        datasets: []
+      },
+      incidenceOptions: {
+        title: {
+          display: true,
+          text: 'Inzidenz'
+        },
+        scales: {
+          xAxes: [{
+            type: 'time',
+            distribution: 'series',
+            ticks: {
+              major: {
+                enabled: true,
+                fontStyle: 'bold'
+              },
+              source: 'data',
+              autoSkip: true,
+              autoSkipPadding: 75,
+              maxRotation: 0,
+              sampleSize: 100
+            }
           }]
         }
       },
@@ -91,6 +141,8 @@ export default {
     const sumCasesSet = this.createDataSet(covidData.cases_sum, 'Fälle', '#FFFF00')
     const sumDeathsSet = this.createDataSet(covidData.deaths_sum, 'Tote', '#FF0000')
     this.sumData.datasets = [sumCasesSet, sumDeathsSet]
+
+    this.incidenceData.datasets = [this.createDataSet(covidData.incidence, 'Inzidenz', '#00FF00')]
 
     this.latestDate = this.getLatestDatapoint(covidData.cases).x
     this.latestCases = this.getLatestDatapoint(covidData.cases).y
