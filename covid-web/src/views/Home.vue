@@ -8,11 +8,15 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import json from '@/assets/data.json'
 
 export default {
   name: 'Home',
   components: {
     HelloWorld
+  },
+  mounted () {
+    console.log(json)
   }
 }
 </script>
