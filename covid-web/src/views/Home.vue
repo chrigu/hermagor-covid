@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <BarChart :chart-data="data" :options="options" />
+    <BarChart v-if="data.datasets.length > 0" :chart-data="data" :options="options" />
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
         }
       },
       data: {
+        labels: ['bla', 'blu'],
         datasets: []
       }
     }
@@ -36,16 +37,23 @@ export default {
   methods: {
     createDates (series) {
       return series.map((datapoint) => new Date(datapoint.x))
+    },
+    createDataSet (data, dates, label, color) {
+      return {
+        label: label,
+        fill: false,
+        data: data.map((datapoint, i) => ({ x: dates[i], y: datapoint.y })),
+        backgroundColor: color
+      }
     }
   },
   mounted () {
     const dates = this.createDates(covidData.cases)
-    const casesSet = {
-      label: 'Fälle',
-      fill: false,
-      data: covidData.cases.map((datapoint, i) => ({ x: dates[i], y: datapoint.y }))
-    }
-    this.data.datasets = [casesSet]
+    const casesSet = this.createDataSet(covidData.cases, dates, 'Fälle', '#FFFF00')
+    const deathsSet = this.createDataSet(covidData.deaths, dates, 'Tote', '#FF0000')
+    console.log(deathsSet)
+    this.data.datasets = [casesSet, deathsSet]
+    console.log(this.data)
   }
 }
 </script>

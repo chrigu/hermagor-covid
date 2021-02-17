@@ -28,7 +28,7 @@ def fetch_covid_data(local_file=''):
 
 def generate_data_for_hermagor(csv_data):
     covid_reader = csv.reader(csv_data, delimiter=';', quotechar='|')
-    hermagor_data = list(filter(lambda row: row[2] == HERMAGOR_CODE, covid_reader))
+    hermagor_all_data = list(filter(lambda row: row[2] == HERMAGOR_CODE, covid_reader))
     initial_data = {
         'cases': [],
         'cases_sum': [],
@@ -36,7 +36,7 @@ def generate_data_for_hermagor(csv_data):
         'deaths': [],
         'deaths_sum': []
     }
-    return reduce(add_data_points, hermagor_data, initial_data)
+    return reduce(add_data_points, hermagor_all_data, initial_data)
 
 
 def add_data_points(data, row):
