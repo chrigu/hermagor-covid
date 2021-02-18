@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1 class="text-6xl mt-8 mb-8">Covid Hermagor</h1>
-    <div>
+    <div class="mb-8">
       <h2 class="text-xl mb-4">Neuste Daten<span class="text-red-500">*</span> ({{humanReadableLastestDate}})</h2>
       <ul class="flex flex-row">
         <li class="flex-auto bg-gray-100 text-center py-4">
@@ -18,11 +18,19 @@
         </li>
       </ul>
       <p class="mt-4"><span class="text-red-500">*</span>Datenquelle (mit etwas Verzögerung): <a class="text-red-500" href="https://www.data.gv.at/katalog/dataset/covid-19-zeitliche-darstellung-von-daten-zu-covid19-fallen-je-bezirk">Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK)</a></p>
-
     </div>
-    <BarChart v-if="hasDatasets(dailyData)" :styles="styles" :height="300" :chart-data="dailyData" :options="dailyOptions" />
-    <LineChart v-if="hasDatasets(sumData)" :height="300" :chart-data="sumData" :options="sumOptions" />
-    <LineChart v-if="hasDatasets(incidenceData)" :chart-data="incidenceData" :options="incidenceOptions" />
+    <div class="my-4">
+      <h2 class="text-xl">Tägliche Fälle & Tote</h2>
+      <BarChart v-if="hasDatasets(dailyData)" :styles="styles" :chart-data="dailyData" :options="dailyOptions" />
+    </div>
+    <div class="my-4">
+      <h2 class="text-xl">Total Fälle & Tote</h2>
+      <LineChart v-if="hasDatasets(sumData)" :chart-data="sumData" :options="sumOptions" />
+    </div>
+    <div class="my-4">
+      <h2 class="text-xl">Inzidenz</h2>
+      <LineChart v-if="hasDatasets(incidenceData)" :chart-data="incidenceData" :options="incidenceOptions" />
+    </div>
   </div>
 </template>
 
@@ -49,17 +57,14 @@ export default {
         position: 'relative'
       },
       dailyData: {
-        labels: ['bla', 'blu'],
         datasets: []
       },
       sumOptions: {},
       incidenceData: {
-        labels: ['bla'],
         datasets: []
       },
       incidenceOptions: {},
       sumData: {
-        labels: ['bla', 'blu'],
         datasets: []
       },
       latestDate: null,
@@ -96,10 +101,6 @@ export default {
     },
     optionsGenerator () {
       return {
-        title: {
-          display: true,
-          text: 'Hermagor neue Fälle & Tote'
-        },
         responsive: true,
         maintainAspectRatio: false,
         scales: {
@@ -132,15 +133,15 @@ export default {
     this.sumOptions = this.optionsGenerator('Total Fälle & Tote')
     this.incidenceOptions = this.optionsGenerator('Inzidenz')
 
-    const dailyCasesSet = this.createDataSet(covidData.cases, 'Fälle', '#0000FF')
-    const dailyDeathsSet = this.createDataSet(covidData.deaths, 'Tote', '#FF0000')
+    const dailyCasesSet = this.createDataSet(covidData.cases, 'Fälle', '#DC2626')
+    const dailyDeathsSet = this.createDataSet(covidData.deaths, 'Tote', '#7F1D1D')
     this.dailyData.datasets = [dailyCasesSet, dailyDeathsSet]
 
-    const sumCasesSet = this.createDataSet(covidData.cases_sum, 'Fälle', '#FFFF00')
-    const sumDeathsSet = this.createDataSet(covidData.deaths_sum, 'Tote', '#FF0000')
+    const sumCasesSet = this.createDataSet(covidData.cases_sum, 'Fälle', '#DC2626')
+    const sumDeathsSet = this.createDataSet(covidData.deaths_sum, 'Tote', '#7F1D1D')
     this.sumData.datasets = [sumCasesSet, sumDeathsSet]
 
-    this.incidenceData.datasets = [this.createDataSet(covidData.incidence, 'Inzidenz', '#00FF00')]
+    this.incidenceData.datasets = [this.createDataSet(covidData.incidence, 'Inzidenz', '#DC2626')]
 
     this.latestDate = this.getLatestDatapoint(covidData.cases).x
     this.latestCases = this.getLatestDatapoint(covidData.cases).y
