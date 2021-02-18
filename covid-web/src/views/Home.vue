@@ -5,11 +5,11 @@
       <h2 class="text-xl mb-4">Neuste Daten<span class="text-red-500">*</span> ({{humanReadableLastestDate}})</h2>
       <ul class="flex flex-col md:flex-row">
         <li class="flex-auto bg-gray-100 text-center py-4 mb-4 md:mb-0">
-          <h3 class="text-2xl md:text-xl">Neue Fälle</h3>
+          <h3 class="text-2xl md:text-xl">Fälle</h3>
           <p class="text-2xl md:text-xl">{{latestCases}}</p>
         </li>
         <li class="flex-auto bg-gray-100 text-center py-4 md:mx-8 mb-4 md:mb-0">
-          <h3 class="text-2xl md:text-xl">Neue Tote</h3>
+          <h3 class="text-2xl md:text-xl">Tote</h3>
           <p class="text-2xl md:text-xl">{{latestDeaths}}</p>
         </li>
         <li class="flex-auto bg-gray-100 text-center py-4">
