@@ -1,19 +1,23 @@
 <template>
   <div class="home">
-    <h1 class="text-4xl font-serif">Covid Hermagor</h1>
+    <h1 class="text-6xl mt-8 mb-8">Covid Hermagor</h1>
     <div>
-      <h2>Neuste Daten*</h2>
-      <ul>
-        <li>
-          Neue Fälle: {{latestCases}}
+      <h2 class="text-xl mb-4">Neuste Daten<span class="text-red-500">*</span> ({{humanReadableLastestDate}})</h2>
+      <ul class="flex flex-row">
+        <li class="flex-auto bg-gray-100 text-center py-4">
+          <h3 class="text-xl">Neue Fälle</h3>
+          <p>{{latestCases}}</p>
         </li>
-        <li>
-          Neue Tote: {{latestDeaths}}
+        <li class="flex-auto bg-gray-100 text-center py-4 mx-8">
+          <h3 class="text-xl">Neue Tote</h3>
+          <p>{{latestDeaths}}</p>
         </li>
-        <li>
-          Inzidenz: {{latestIncidence}}
+        <li class="flex-auto bg-gray-100 text-center py-4">
+          <h3 class="text-xl">Inzidenz</h3>
+          <p>{{roundedIncedence}}</p>
         </li>
       </ul>
+      <p class="mt-4"><span class="text-red-500">*</span>Datenquelle (mit etwas Verzögerung): <a class="text-red-500" href="https://www.data.gv.at/katalog/dataset/covid-19-zeitliche-darstellung-von-daten-zu-covid19-fallen-je-bezirk">Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK)</a></p>
 
     </div>
     <BarChart v-if="hasDatasets(dailyData)" :styles="styles" :height="300" :chart-data="dailyData" :options="dailyOptions" />
@@ -62,6 +66,15 @@ export default {
       latestCases: -1,
       latestDeaths: -1,
       latestIncidence: -1
+    }
+  },
+  computed: {
+    roundedIncedence () {
+      return Math.round(this.latestIncidence)
+    },
+    humanReadableLastestDate () {
+      const date = new Date(this.latestDate)
+      return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
     }
   },
   methods: {
