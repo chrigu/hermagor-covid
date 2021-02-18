@@ -1,15 +1,23 @@
 <template>
   <div class="home">
-    <ul>
-      <li>{{latestDate}}</li>
-      <li>{{latestCases}}</li>
-      <li>{{latestDeaths}}</li>
-      <li>{{latestIncidence}}</li>
-    </ul>
+    <h1 class="text-4xl font-serif">Covid Hermagor</h1>
     <div>
-      <BarChart v-if="hasDatasets(dailyData)" :chart-data="dailyData" :options="dailyOptions" />
+      <h2>Neuste Daten*</h2>
+      <ul>
+        <li>
+          Neue Fälle: {{latestCases}}
+        </li>
+        <li>
+          Neue Tote: {{latestDeaths}}
+        </li>
+        <li>
+          Inzidenz: {{latestIncidence}}
+        </li>
+      </ul>
+
     </div>
-    <LineChart v-if="hasDatasets(sumData)" :chart-data="sumData" :options="sumOptions" />
+    <BarChart v-if="hasDatasets(dailyData)" :styles="styles" :height="300" :chart-data="dailyData" :options="dailyOptions" />
+    <LineChart v-if="hasDatasets(sumData)" :height="300" :chart-data="sumData" :options="sumOptions" />
     <LineChart v-if="hasDatasets(incidenceData)" :chart-data="incidenceData" :options="incidenceOptions" />
   </div>
 </template>
@@ -30,82 +38,22 @@ export default {
     // https://www.chartjs.org/samples/latest/scales/time/financial.html
     return {
       dailyOptions: {
-        title: {
-          display: true,
-          text: 'Hermagor neue Fälle & Tote'
-        },
-        scales: {
-          xAxes: [{
-            type: 'time',
-            distribution: 'series',
-            ticks: {
-              major: {
-                enabled: true,
-                fontStyle: 'bold'
-              },
-              source: 'data',
-              autoSkip: true,
-              autoSkipPadding: 75,
-              maxRotation: 0,
-              sampleSize: 100
-            }
-          }]
-        }
+
+      },
+      styles: {
+        height: '300px',
+        position: 'relative'
       },
       dailyData: {
         labels: ['bla', 'blu'],
         datasets: []
       },
-      sumOptions: {
-        title: {
-          display: true,
-          text: 'Hermagor neue Fälle & Tote'
-        },
-        scales: {
-          xAxes: [{
-            type: 'time',
-            distribution: 'series',
-            ticks: {
-              major: {
-                enabled: true,
-                fontStyle: 'bold'
-              },
-              source: 'data',
-              autoSkip: true,
-              autoSkipPadding: 75,
-              maxRotation: 0,
-              sampleSize: 100
-            }
-          }]
-        }
-      },
+      sumOptions: {},
       incidenceData: {
         labels: ['bla'],
         datasets: []
       },
-      incidenceOptions: {
-        title: {
-          display: true,
-          text: 'Inzidenz'
-        },
-        scales: {
-          xAxes: [{
-            type: 'time',
-            distribution: 'series',
-            ticks: {
-              major: {
-                enabled: true,
-                fontStyle: 'bold'
-              },
-              source: 'data',
-              autoSkip: true,
-              autoSkipPadding: 75,
-              maxRotation: 0,
-              sampleSize: 100
-            }
-          }]
-        }
-      },
+      incidenceOptions: {},
       sumData: {
         labels: ['bla', 'blu'],
         datasets: []
@@ -117,9 +65,6 @@ export default {
     }
   },
   methods: {
-    // createDates (series) {
-    //   return series.map((datapoint) => new Date(datapoint.x))
-    // },
     createDataSet (data, label, color) {
       return {
         label: label,
@@ -135,10 +80,45 @@ export default {
     },
     hasDatasets (data) {
       return data.datasets.length > 0
+    },
+    optionsGenerator () {
+      return {
+        title: {
+          display: true,
+          text: 'Hermagor neue Fälle & Tote'
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [{
+            type: 'time',
+            distribution: 'series',
+            time: {
+              displayFormats: {
+                year: 'MMM YYYY'
+              }
+            },
+            ticks: {
+              major: {
+                enabled: true,
+                fontStyle: 'bold'
+              },
+              source: 'data',
+              autoSkip: true,
+              autoSkipPadding: 75,
+              maxRotation: 0,
+              sampleSize: 100
+            }
+          }]
+        }
+      }
     }
   },
   mounted () {
-    // const dates = this.createDates(covidData.cases)
+    this.dailyOptions = this.optionsGenerator('Tägliche Fälle & Tote')
+    this.sumOptions = this.optionsGenerator('Total Fälle & Tote')
+    this.incidenceOptions = this.optionsGenerator('Inzidenz')
+
     const dailyCasesSet = this.createDataSet(covidData.cases, 'Fälle', '#0000FF')
     const dailyDeathsSet = this.createDataSet(covidData.deaths, 'Tote', '#FF0000')
     this.dailyData.datasets = [dailyCasesSet, dailyDeathsSet]
@@ -156,10 +136,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.chart {
-  position: relative;
-  height: 300px;
-}
-</style>

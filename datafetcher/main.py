@@ -1,8 +1,8 @@
-from functools import reduce
-
 import requests
 import csv
 import json
+import time
+from functools import reduce
 from io import StringIO
 from datetime import datetime
 
@@ -40,27 +40,28 @@ def generate_data_for_hermagor(csv_data):
 
 
 def add_data_points(data, row):
-    item_date = datetime.strptime(row[0], "%d.%m.%Y 00:00:00")
+    item_date = time.strptime(row[0], "%d.%m.%Y 00:00:00")
+    timestamp = int(time.mktime(item_date)) * 1000
     incidence = row[7].replace(',', '.')
 
     data['cases'].append({
-        'x': item_date.isoformat(),
+        'x': timestamp,
         'y': int(row[4])
     })
     data['cases_sum'].append({
-        'x': item_date.isoformat(),
+        'x': timestamp,
         'y': int(row[5])
     })
     data['incidence'].append({
-        'x': item_date.isoformat(),
+        'x': timestamp,
         'y': float(incidence)
     })
     data['deaths'].append({
-        'x': item_date.isoformat(),
+        'x': timestamp,
         'y': int(row[8])
     })
     data['deaths_sum'].append({
-        'x': item_date.isoformat(),
+        'x': timestamp,
         'y': int(row[9])
     })
 
