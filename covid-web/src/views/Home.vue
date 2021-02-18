@@ -1,20 +1,20 @@
 <template>
   <div class="home">
-    <h1 class="text-6xl mt-8 mb-8">Covid Hermagor</h1>
+    <h1 class="text-center md:text-left text-6xl mt-8 mb-8">Covid Hermagor</h1>
     <div class="mb-8">
       <h2 class="text-xl mb-4">Neuste Daten<span class="text-red-500">*</span> ({{humanReadableLastestDate}})</h2>
-      <ul class="flex flex-row">
-        <li class="flex-auto bg-gray-100 text-center py-4">
-          <h3 class="text-xl">Neue Fälle</h3>
-          <p>{{latestCases}}</p>
+      <ul class="flex flex-col md:flex-row">
+        <li class="flex-auto bg-gray-100 text-center py-4 mb-4 md:mb-0">
+          <h3 class="text-2xl md:text-xl">Neue Fälle</h3>
+          <p class="text-2xl md:text-xl">{{latestCases}}</p>
         </li>
-        <li class="flex-auto bg-gray-100 text-center py-4 mx-8">
-          <h3 class="text-xl">Neue Tote</h3>
-          <p>{{latestDeaths}}</p>
+        <li class="flex-auto bg-gray-100 text-center py-4 md:mx-8 mb-4 md:mb-0">
+          <h3 class="text-2xl md:text-xl">Neue Tote</h3>
+          <p class="text-2xl md:text-xl">{{latestDeaths}}</p>
         </li>
         <li class="flex-auto bg-gray-100 text-center py-4">
-          <h3 class="text-xl">Inzidenz</h3>
-          <p>{{roundedIncedence}}</p>
+          <h3 class="text-2xl md:text-xl">Inzidenz</h3>
+          <p class="text-2xl md:text-xl">{{roundedIncedence}}</p>
         </li>
       </ul>
       <p class="mt-4"><span class="text-red-500">*</span>Datenquelle (mit etwas Verzögerung): <a class="text-red-500" href="https://www.data.gv.at/katalog/dataset/covid-19-zeitliche-darstellung-von-daten-zu-covid19-fallen-je-bezirk">Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK)</a></p>
