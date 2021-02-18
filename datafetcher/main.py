@@ -68,9 +68,6 @@ def add_data_points(data, row):
     return data
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    fetch_covid_data(local_file='covid_data.csv')
-    # fetch_covid_data()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # fetch_covid_data(local_file='covid_data.csv')
+    fetch_covid_data()
