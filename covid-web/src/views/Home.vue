@@ -27,10 +27,13 @@
       <h2 class="text-xl">Total Fälle & Tote</h2>
       <LineChart v-if="hasDatasets(sumData)" :chart-data="sumData" :options="sumOptions" />
     </div>
-    <div class="my-4">
+    <div class="mt-4 mb-8">
       <h2 class="text-xl">Inzidenz</h2>
       <LineChart v-if="hasDatasets(incidenceData)" :chart-data="incidenceData" :options="incidenceOptions" />
     </div>
+    <footer class="text-center mb-2">
+      <p><router-link to="/about">Impressum</router-link> | <a class="text-red-500" href="https://github.com/chrigu/hermagor-covid">Code</a></p>
+    </footer>
   </div>
 </template>
 
