@@ -6,17 +6,18 @@
       <ul class="flex flex-col md:flex-row">
         <li class="flex-auto bg-gray-100 text-center py-4 mb-4 md:mb-0">
           <h3 class="text-2xl md:text-xl">Fälle</h3>
-          <p class="text-2xl md:text-xl">{{currentData(latestCases)}} ({{latestChange(latestCases)}})</p>
+          <p class="text-2xl md:text-xl">{{currentData(latestCases)}} (<span :class="changeClass(latestCases)">{{latestChange(latestCases)}}</span>)</p>
         </li>
         <li class="flex-auto bg-gray-100 text-center py-4 md:mx-8 mb-4 md:mb-0">
           <h3 class="text-2xl md:text-xl">Tote</h3>
-          <p class="text-2xl md:text-xl">{{currentData(latestDeaths)}} ({{latestChange(latestDeaths)}})</p>
+          <p class="text-2xl md:text-xl">{{currentData(latestDeaths)}} (<span :class="changeClass(latestDeaths)">{{latestChange(latestDeaths)}}</span>)</p>
         </li>
         <li class="flex-auto bg-gray-100 text-center py-4">
           <h3 class="text-2xl md:text-xl">Inzidenz</h3>
-          <p class="text-2xl md:text-xl">{{roundedIncedence}} ({{latestChange(latestIncidences)}})</p>
+          <p class="text-2xl md:text-xl">{{roundedIncedence}} (<span :class="changeClass(latestIncidences)">{{latestChange(latestIncidences)}}</span>)</p>
         </li>
       </ul>
+      <p class="mt-4">In Klammer: Veränderung zum Vortag</p>
       <p class="mt-4"><span class="text-red-500">*</span>Datenquelle (mit etwas Verzögerung): <a class="text-red-500" href="https://www.data.gv.at/katalog/dataset/covid-19-zeitliche-darstellung-von-daten-zu-covid19-fallen-je-bezirk">Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK)</a></p>
     </div>
     <div class="my-4">
@@ -50,7 +51,7 @@ export default {
     LineChart
   },
   data () {
-    // https://www.chartjs.org/samples/latest/scales/time/financial.html
+    // Inspiration: https://www.chartjs.org/samples/latest/scales/time/financial.html
     return {
       dailyOptions: {
 
@@ -107,6 +108,16 @@ export default {
       }
 
       return '+/-0%'
+    },
+    changeClass (data) {
+      const change = this.latestChange(data)
+
+      if (change.startsWith('+/-')) {
+        return {}
+      } else if (change.startsWith('+')) {
+        return { 'text-red-500': true }
+      }
+      return { 'text-green-500': true }
     },
     createDataSet (data, label, color) {
       return {
