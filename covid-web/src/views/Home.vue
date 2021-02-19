@@ -14,11 +14,11 @@
         </li>
         <li class="flex-auto bg-gray-100 text-center py-4">
           <h3 class="text-2xl md:text-xl">Inzidenz</h3>
-          <p class="text-2xl md:text-xl">{{roundedIncedence}} (<span :class="changeClass(latestIncidences)">{{latestChange(latestIncidences)}}</span>)</p>
+          <p class="text-2xl md:text-xl">{{roundedIncidence}} (<span :class="changeClass(latestIncidences)">{{latestChange(latestIncidences)}}</span>)</p>
         </li>
       </ul>
       <p class="mt-4">In Klammer: Veränderung zum Vortag</p>
-      <p class="mt-4"><span class="text-red-500">*</span>Datenquelle (mit etwas Verzögerung): <a class="text-red-500" href="https://www.data.gv.at/katalog/dataset/covid-19-zeitliche-darstellung-von-daten-zu-covid19-fallen-je-bezirk">Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK)</a></p>
+      <p class="mt-4"><span class="text-red-500">*</span>Datenquelle (mit einem Tag Verzögerung): <a class="text-red-500" href="https://www.data.gv.at/katalog/dataset/covid-19-zeitliche-darstellung-von-daten-zu-covid19-fallen-je-bezirk">Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK)</a></p>
     </div>
     <div class="my-4">
       <h2 class="text-xl">Tägliche Fälle & Tote</h2>
@@ -54,7 +54,6 @@ export default {
     // Inspiration: https://www.chartjs.org/samples/latest/scales/time/financial.html
     return {
       dailyOptions: {
-
       },
       styles: {
         height: '300px',
@@ -78,7 +77,7 @@ export default {
     }
   },
   computed: {
-    roundedIncedence () {
+    roundedIncidence () {
       const latestIncidence = this.currentData(this.latestIncidences)
       return Math.round(latestIncidence)
     },

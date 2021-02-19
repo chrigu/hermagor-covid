@@ -1,10 +1,10 @@
+import os
 import requests
 import csv
 import json
 import time
 from functools import reduce
 from io import StringIO
-from datetime import datetime
 
 URL = 'https://covid19-dashboard.ages.at/data/CovidFaelle_Timeline_GKZ.csv'
 HERMAGOR_CODE = '203'
@@ -17,31 +17,31 @@ def fetch_covid_data(local_file=''):
         r = requests.get(URL)
         csv_data = StringIO(r.text)
 
-    hermagor_data = generate_data_for_hermagor(csv_data)
+    district_series = generate_series_for_district(csv_data)
 
     if local_file:
         csv_data.close()
 
     with open('../covid-web/src/assets/data.json', 'w') as outfile:
-        json.dump(hermagor_data, outfile)
+        json.dump(district_series, outfile)
 
 
-def generate_data_for_hermagor(csv_data):
+def generate_series_for_district(csv_data):
     covid_reader = csv.reader(csv_data, delimiter=';', quotechar='|')
-    hermagor_all_data = list(filter(lambda row: row[2] == HERMAGOR_CODE, covid_reader))
-    initial_data = {
+    district_all_data = list(filter(lambda row: row[2] == os.environ.get('DISTRICT_CODE', HERMAGOR_CODE), covid_reader))
+    initial_series = {
         'cases': [],
         'cases_sum': [],
         'incidence': [],
         'deaths': [],
         'deaths_sum': []
     }
-    return reduce(add_data_points, hermagor_all_data, initial_data)
+    return reduce(add_data_points, district_all_data, initial_series)
 
 
 def add_data_points(data, row):
-    item_date = time.strptime(row[0], "%d.%m.%Y 00:00:00")
-    timestamp = int(time.mktime(item_date)) * 1000
+    row_date = time.strptime(row[0], "%d.%m.%Y 00:00:00")
+    timestamp = int(time.mktime(row_date)) * 1000
     incidence = row[7].replace(',', '.')
 
     data['cases'].append({
