@@ -95,14 +95,14 @@ export default {
     },
     latestChange (data) {
       let change = 0
-
       if (data.length === 2) {
-        change = (data[1].y / data[0].y).toFixed(2)
+        const longChange = (1 - (data[1].y / data[0].y)) * 100
+        change = (longChange).toFixed(2)
       }
 
-      if (change > 0) {
+      if (data[1].y > data[0].y) {
         return `+${change}%`
-      } else if (change < 0) {
+      } else if (data[1].y < data[0].y) {
         return `-${change}%`
       }
 
