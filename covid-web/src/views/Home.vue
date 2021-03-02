@@ -101,7 +101,7 @@ export default {
         if (data[1].y > data[0].y) {
           return `+${change}%`
         } else if (data[1].y < data[0].y) {
-          return `-${change}%`
+          return `${change}%`
         }
       }
 
