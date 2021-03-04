@@ -98,6 +98,11 @@ export default {
       if (data.length === 2) {
         const longChange = (1 - (data[1].y / data[0].y)) * 100
         change = -1 * (longChange).toFixed(2)
+
+        if (change === Infinity) {
+          return '+100%'
+        }
+
         if (data[1].y > data[0].y) {
           return `+${change}%`
         } else if (data[1].y < data[0].y) {
